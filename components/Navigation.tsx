@@ -31,7 +31,7 @@ export function Navigation() {
       animate={{ opacity: 1, y: 0 }}
       className={`fixed top-0 w-full z-50 transition-all duration-300 ${
         isScrolled 
-          ? 'bg-vsolve-navy/95 backdrop-blur-sm border-b border-vsolve-gold/20' 
+          ? 'bg-black/95 backdrop-blur-sm border-b border-vsolve-gold/20' 
           : 'bg-transparent'
       }`}
     >
@@ -58,13 +58,6 @@ export function Navigation() {
                 {item.label}
               </Link>
             ))}
-            
-            <Link
-              href="/invite-us"
-              className="bg-vsolve-gold text-vsolve-navy px-6 py-3 rounded-sm font-medium hover:bg-vsolve-gold-light transition-all duration-300 glow-gold"
-            >
-              Let's Solve What Matters
-            </Link>
           </div>
 
           {/* Mobile Menu Button */}
@@ -84,7 +77,7 @@ export function Navigation() {
             initial={{ opacity: 0, height: 0 }}
             animate={{ opacity: 1, height: 'auto' }}
             exit={{ opacity: 0, height: 0 }}
-            className="lg:hidden bg-vsolve-navy border-t border-vsolve-gold/20"
+            className="lg:hidden bg-black border-t border-vsolve-gold/20"
           >
             <div className="section-padding py-6">
               <div className="flex flex-col space-y-6">
@@ -98,14 +91,6 @@ export function Navigation() {
                     {item.label}
                   </Link>
                 ))}
-                
-                <Link
-                  href="/invite-us"
-                  className="bg-vsolve-gold text-vsolve-navy px-6 py-3 rounded-sm font-medium hover:bg-vsolve-gold-light transition-all duration-300 text-center mt-4"
-                  onClick={() => setIsMobileMenuOpen(false)}
-                >
-                  Let's Solve What Matters
-                </Link>
               </div>
             </div>
           </motion.div>

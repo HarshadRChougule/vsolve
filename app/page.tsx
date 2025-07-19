@@ -4,6 +4,7 @@ import React, { useState, useRef, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Lock, Eye, Shield } from 'lucide-react'
 import { useRouter } from 'next/navigation'
+import Link from 'next/link'
 
 export default function AccessPortal() {
   const [accessCode, setAccessCode] = useState('')
@@ -53,7 +54,36 @@ export default function AccessPortal() {
   }
 
   return (
-    <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+    <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center pt-20">
+      {/* Logo */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="absolute top-8 left-8 z-20"
+      >
+        <Link href="/" className="group">
+          <div className="text-2xl font-serif font-bold text-vsolve-ivory group-hover:text-vsolve-gold transition-colors duration-300">
+            VSOLVE
+          </div>
+        </Link>
+      </motion.div>
+
+      {/* Let's Solve What Matters Button */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="absolute top-8 right-8 z-20"
+      >
+        <Link
+          href="/invite-us"
+          className="bg-vsolve-gold text-vsolve-navy px-6 py-3 rounded-sm font-medium hover:bg-vsolve-gold-light transition-all duration-300 glow-gold"
+        >
+          Let's Solve What Matters
+        </Link>
+      </motion.div>
+
       {/* Subtle Background Pattern */}
       <div className="absolute inset-0 opacity-[0.02]">
         <div className="absolute inset-0 bg-gradient-to-br from-vsolve-gold via-transparent to-vsolve-gold" />
@@ -88,10 +118,8 @@ export default function AccessPortal() {
             transition={{ delay: 1, duration: 1.5, ease: "easeOut" }}
             className="space-y-6"
           >
-            <h1 className="text-4xl lg:text-6xl font-serif font-bold text-vsolve-ivory tracking-wide leading-tight">
-              Strategic Clarity
-              <br />
-              <span className="text-vsolve-gold">Reserved for the Few</span>
+            <h1 className="text-4xl lg:text-6xl font-serif font-bold text-vsolve-gold tracking-wide leading-tight">
+              UNLOCK YOUR LEADERSHIP POTENTIAL
             </h1>
             
             <motion.p 

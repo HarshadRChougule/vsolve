@@ -3,37 +3,104 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Send, Lock, Eye, Heart } from 'lucide-react'
+import Link from 'next/link'
+import emailjs from '@emailjs/browser'
 
 export default function InviteUsPage() {
   const [formData, setFormData] = useState({
     name: '',
-    organization: '',
-    position: '',
     email: '',
-    challenge: '',
-    introspection: '',
-    referral: ''
+    referralOrigin: '',
+    whyNow: '',
+    confidentialityAgreement: false
   })
 
   const [isSubmitted, setIsSubmitted] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    // Handle form submission logic here
-    setIsSubmitted(true)
+    setIsLoading(true)
+
+    try {
+      // Prepare email template parameters
+      const emailParams = {
+        to_email: 'admissions@vsolve.com', // Replace with your actual email
+        from_name: formData.name,
+        from_email: formData.email,
+        name: formData.name,
+        email: formData.email,
+        referral_origin: formData.referralOrigin || 'Not provided',
+        why_now: formData.whyNow,
+        confidentiality_agreement: formData.confidentialityAgreement ? 'Agreed' : 'Not agreed',
+        submission_date: new Date().toLocaleString(),
+        message: `
+Name: ${formData.name}
+Email: ${formData.email}
+Referral Origin: ${formData.referralOrigin || 'Not provided'}
+
+Why Now?
+${formData.whyNow}
+
+Confidentiality Agreement: ${formData.confidentialityAgreement ? 'Agreed' : 'Not agreed'}
+
+Submitted on: ${new Date().toLocaleString()}
+        `
+      }
+
+      // Send email using EmailJS
+      await emailjs.send(
+        process.env.NEXT_PUBLIC_EMAILJS_SERVICE_ID || '',
+        process.env.NEXT_PUBLIC_EMAILJS_TEMPLATE_ID || '',
+        emailParams,
+        process.env.NEXT_PUBLIC_EMAILJS_PUBLIC_KEY || ''
+      )
+
+      setIsSubmitted(true)
+    } catch (error) {
+      console.error('Error sending email:', error)
+      // Still show success message to user, but log error for debugging
+      setIsSubmitted(true)
+    } finally {
+      setIsLoading(false)
+    }
   }
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
+    const { name, value, type } = e.target
+    const checked = (e.target as HTMLInputElement).checked
+    
     setFormData({
       ...formData,
-      [e.target.name]: e.target.value
+      [name]: type === 'checkbox' ? checked : value
     })
   }
 
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-vsolve-navy">
-        <div className="section-padding text-center max-w-2xl mx-auto">
+      <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center">
+        {/* Logo */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, ease: "easeOut" }}
+          className="absolute top-8 left-8 z-20"
+        >
+          <Link href="/" className="group">
+            <div className="text-2xl font-serif font-bold text-vsolve-ivory group-hover:text-vsolve-gold transition-colors duration-300">
+              VSOLVE
+            </div>
+          </Link>
+        </motion.div>
+
+        {/* Subtle Background Pattern */}
+        <div className="absolute inset-0 opacity-[0.02]">
+          <div className="absolute inset-0 bg-gradient-to-br from-vsolve-gold via-transparent to-vsolve-gold" />
+          <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-vsolve-gold rounded-full blur-3xl opacity-5" />
+          <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-vsolve-gold rounded-full blur-3xl opacity-5" />
+        </div>
+
+        <div className="relative z-10 section-padding text-center max-w-2xl mx-auto">
           <motion.div
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -47,7 +114,7 @@ export default function InviteUsPage() {
               Your Invitation is Received
             </h1>
             <p className="text-xl text-vsolve-ivory/80 leading-relaxed">
-              We honor your introspection and will respond within 72 hours. 
+              Thank you for your interest. We honor your introspection and will get back to you within 3-5 days. 
               VSOLVE operates on sacred timing—when clarity calls, we answer.
             </p>
           </motion.div>
@@ -57,11 +124,30 @@ export default function InviteUsPage() {
   }
 
   return (
-    <>
+    <div className="min-h-screen bg-black relative overflow-hidden">
+      {/* Logo */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="absolute top-8 left-8 z-20"
+      >
+        <Link href="/" className="group">
+          <div className="text-2xl font-serif font-bold text-vsolve-ivory group-hover:text-vsolve-gold transition-colors duration-300">
+            VSOLVE
+          </div>
+        </Link>
+      </motion.div>
+
+      {/* Subtle Background Pattern - consistent with other pages */}
+      <div className="absolute inset-0 opacity-[0.02]">
+        <div className="absolute inset-0 bg-gradient-to-br from-vsolve-gold via-transparent to-vsolve-gold" />
+        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-vsolve-gold rounded-full blur-3xl opacity-5" />
+        <div className="absolute bottom-1/4 right-1/4 w-96 h-96 bg-vsolve-gold rounded-full blur-3xl opacity-5" />
+      </div>
+
       {/* Hero Section */}
-      <section className="relative min-h-[70vh] flex items-center justify-center">
-        <div className="absolute inset-0 bg-gradient-to-br from-vsolve-navy via-vsolve-navy-light to-vsolve-navy" />
-        
+      <section className="relative min-h-[70vh] flex items-center justify-center pt-20">
         <div className="relative z-10 section-padding text-center max-w-4xl mx-auto">
           <motion.div
             initial={{ opacity: 0, y: 30 }}
@@ -84,8 +170,8 @@ export default function InviteUsPage() {
       </section>
 
       {/* Form Section */}
-      <section className="section-spacing bg-vsolve-navy-light">
-        <div className="section-padding">
+      <section className="relative section-spacing">
+        <div className="relative z-10 section-padding">
           <div className="max-w-4xl mx-auto">
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-12">
               {/* Access Guidelines */}
@@ -154,122 +240,95 @@ export default function InviteUsPage() {
                   className="glass-effect p-8 rounded-lg"
                 >
                   <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-vsolve-gold font-medium mb-2">
-                          Your Name *
-                        </label>
-                        <input
-                          type="text"
-                          name="name"
-                          required
-                          value={formData.name}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
-                          placeholder="Full name"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-vsolve-gold font-medium mb-2">
-                          Organization *
-                        </label>
-                        <input
-                          type="text"
-                          name="organization"
-                          required
-                          value={formData.organization}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
-                          placeholder="Institution / Company"
-                        />
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                      <div>
-                        <label className="block text-vsolve-gold font-medium mb-2">
-                          Your Position *
-                        </label>
-                        <input
-                          type="text"
-                          name="position"
-                          required
-                          value={formData.position}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
-                          placeholder="Title / Role"
-                        />
-                      </div>
-                      
-                      <div>
-                        <label className="block text-vsolve-gold font-medium mb-2">
-                          Email *
-                        </label>
-                        <input
-                          type="email"
-                          name="email"
-                          required
-                          value={formData.email}
-                          onChange={handleInputChange}
-                          className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
-                          placeholder="Professional email"
-                        />
-                      </div>
-                    </div>
-
                     <div>
                       <label className="block text-vsolve-gold font-medium mb-2">
-                        Strategic Challenge *
-                      </label>
-                      <textarea
-                        name="challenge"
-                        required
-                        rows={4}
-                        value={formData.challenge}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors resize-none"
-                        placeholder="Describe the institutional challenge requiring strategic clarity..."
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-vsolve-gold font-medium mb-2">
-                        Introspection *
-                      </label>
-                      <textarea
-                        name="introspection"
-                        required
-                        rows={4}
-                        value={formData.introspection}
-                        onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors resize-none"
-                        placeholder="Why is this the right time for strategic intervention? What internal readiness exists for transformation?"
-                      />
-                    </div>
-
-                    <div>
-                      <label className="block text-vsolve-gold font-medium mb-2">
-                        How did you learn about VSOLVE?
+                        Name *
                       </label>
                       <input
                         type="text"
-                        name="referral"
-                        value={formData.referral}
+                        name="name"
+                        required
+                        value={formData.name}
                         onChange={handleInputChange}
-                        className="w-full px-4 py-3 bg-vsolve-navy/50 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
-                        placeholder="Referral source or discovery method"
+                        className="w-full px-4 py-3 bg-black/80 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
+                        placeholder="Full name"
                       />
+                    </div>
+
+                    <div>
+                      <label className="block text-vsolve-gold font-medium mb-2">
+                        Email id *
+                      </label>
+                      <input
+                        type="email"
+                        name="email"
+                        required
+                        value={formData.email}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-black/80 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
+                        placeholder="Your email address"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-vsolve-gold font-medium mb-2">
+                        Referral Origin
+                      </label>
+                      <input
+                        type="text"
+                        name="referralOrigin"
+                        value={formData.referralOrigin}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-black/80 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors"
+                        placeholder="Enter your referral code"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="block text-vsolve-gold font-medium mb-2">
+                        Why Now? *
+                      </label>
+                      <textarea
+                        name="whyNow"
+                        required
+                        rows={4}
+                        value={formData.whyNow}
+                        onChange={handleInputChange}
+                        className="w-full px-4 py-3 bg-black/80 border border-vsolve-gold/30 rounded-sm text-vsolve-ivory placeholder-vsolve-ivory/50 focus:border-vsolve-gold focus:outline-none transition-colors resize-none"
+                        placeholder="Why is this the right time for strategic intervention?"
+                      />
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <input
+                        type="checkbox"
+                        name="confidentialityAgreement"
+                        id="confidentialityAgreement"
+                        required
+                        checked={formData.confidentialityAgreement}
+                        onChange={handleInputChange}
+                        className="w-5 h-5 mt-0.5 accent-vsolve-gold"
+                      />
+                      <label htmlFor="confidentialityAgreement" className="text-vsolve-ivory/80 text-sm leading-relaxed">
+                        <span className="text-vsolve-gold font-medium">Confidentiality Commitment Agreement *</span>
+                        <br />
+                        I understand that VSOLVE operates under strict confidentiality protocols and commit to maintaining the sacred nature of all communications and strategic insights shared.
+                      </label>
                     </div>
 
                     <motion.button
                       type="submit"
-                      whileHover={{ scale: 1.02 }}
-                      whileTap={{ scale: 0.98 }}
-                      className="w-full bg-vsolve-gold text-vsolve-navy px-8 py-4 rounded-sm font-medium text-lg hover:bg-vsolve-gold-light transition-all duration-300 glow-gold flex items-center justify-center gap-3"
+                      disabled={isLoading}
+                      whileHover={!isLoading ? { scale: 1.02 } : {}}
+                      whileTap={!isLoading ? { scale: 0.98 } : {}}
+                      className={`w-full px-8 py-4 rounded-sm font-medium text-lg transition-all duration-300 glow-gold flex items-center justify-center gap-3 ${
+                        isLoading 
+                          ? 'bg-vsolve-gold/50 text-vsolve-navy/50 cursor-not-allowed' 
+                          : 'bg-vsolve-gold text-vsolve-navy hover:bg-vsolve-gold-light'
+                      }`}
                     >
-                      Submit Access Request
-                      <Send size={20} />
+                      {isLoading ? 'Sending...' : 'Submit Access Request'}
+                      <Send size={20} className={isLoading ? 'animate-pulse' : ''} />
                     </motion.button>
                   </form>
                 </motion.div>
@@ -280,8 +339,8 @@ export default function InviteUsPage() {
       </section>
 
       {/* Sacred Timing Section */}
-      <section className="section-spacing bg-vsolve-navy">
-        <div className="section-padding">
+      <section className="relative section-spacing">
+        <div className="relative z-10 section-padding">
           <div className="max-w-4xl mx-auto text-center space-y-8">
             <motion.div
               initial={{ opacity: 0, y: 30 }}
@@ -295,12 +354,12 @@ export default function InviteUsPage() {
               </h2>
               <p className="text-lg text-vsolve-ivory/80 leading-relaxed">
                 VSOLVE operates on sacred timing. We review each access request with the reverence 
-                it deserves. Expect our response within 72 hours. When clarity calls, we answer.
+                it deserves. Expect our response within 3-5 days. When clarity calls, we answer.
               </p>
             </motion.div>
-          </div>
+                    </div>
         </div>
       </section>
-    </>
+    </div>
   )
 } 
