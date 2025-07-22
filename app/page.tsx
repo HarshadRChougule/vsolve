@@ -1,57 +1,58 @@
-'use client'
+"use client";
 
-import React, { useState, useRef, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Lock, Eye, Shield } from 'lucide-react'
-import { useRouter } from 'next/navigation'
-import Link from 'next/link'
+import React, { useState, useRef, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { Lock, Eye, Shield } from "lucide-react";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function AccessPortal() {
-  const [accessCode, setAccessCode] = useState('')
-  const [isProcessing, setIsProcessing] = useState(false)
-  const [showError, setShowError] = useState(false)
-  const [attempts, setAttempts] = useState(0)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const router = useRouter()
+  const [accessCode, setAccessCode] = useState("");
+  const [isProcessing, setIsProcessing] = useState(false);
+  const [showError, setShowError] = useState(false);
+  const [attempts, setAttempts] = useState(0);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const router = useRouter();
 
   // Valid access codes (in production, this would be server-side)
-  const validCodes = ['VSOLVE2024', 'SACRED', 'DHARMA', 'CLARITY']
+  const validCodes = ["VSOLVE2024", "SACRED", "DHARMA", "CLARITY"];
 
   useEffect(() => {
     // Focus input on mount
     if (inputRef.current) {
-      inputRef.current.focus()
+      inputRef.current.focus();
     }
-  }, [])
+  }, []);
 
   const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault()
-    setIsProcessing(true)
-    setShowError(false)
+    e.preventDefault();
+    setIsProcessing(true);
+    setShowError(false);
 
     // Simulate authentication delay for gravitas
-    await new Promise(resolve => setTimeout(resolve, 1500))
+    await new Promise((resolve) => setTimeout(resolve, 1500));
 
     if (validCodes.includes(accessCode.toUpperCase())) {
       // Store access in session
-      sessionStorage.setItem('vsolve_access', 'granted')
-      router.push('/sanctuary')
+      sessionStorage.setItem("vsolve_access", "granted");
+      router.push("/sanctuary");
     } else {
-      setShowError(true)
-      setAttempts(prev => prev + 1)
-      setAccessCode('')
+      setShowError(true);
+      setAttempts((prev) => prev + 1);
+      setAccessCode("");
     }
-    
-    setIsProcessing(false)
-  }
+
+    setIsProcessing(false);
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const value = e.target.value.toUpperCase()
-    if (value.length <= 12) { // Reasonable code length limit
-      setAccessCode(value)
-      setShowError(false)
+    const value = e.target.value.toUpperCase();
+    if (value.length <= 12) {
+      // Reasonable code length limit
+      setAccessCode(value);
+      setShowError(false);
     }
-  }
+  };
 
   return (
     <div className="min-h-screen bg-black relative overflow-hidden flex items-center justify-center pt-20">
@@ -119,10 +120,10 @@ export default function AccessPortal() {
             className="space-y-6"
           >
             <h1 className="text-4xl lg:text-6xl font-serif font-bold text-vsolve-gold tracking-wide leading-tight">
-              UNLOCK YOUR LEADERSHIP POTENTIAL
+              SACRED ARCHITECTURE FOR POWER, LEGACY & SUCCESSION FOR THE ELITES
             </h1>
-            
-            <motion.p 
+
+            <motion.p
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               transition={{ delay: 1.5, duration: 1 }}
@@ -149,9 +150,9 @@ export default function AccessPortal() {
                   placeholder="ENTER ACCESS CODE"
                   disabled={isProcessing}
                   className="w-full px-8 py-6 bg-transparent border-2 border-vsolve-gold/30 rounded-sm text-center text-2xl font-mono font-bold text-vsolve-gold placeholder-vsolve-gold/30 focus:border-vsolve-gold focus:outline-none transition-all duration-500 tracking-widest disabled:opacity-50"
-                  style={{ letterSpacing: '0.3em' }}
+                  style={{ letterSpacing: "0.3em" }}
                 />
-                
+
                 {/* Processing Indicator */}
                 <AnimatePresence>
                   {isProcessing && (
@@ -166,10 +167,10 @@ export default function AccessPortal() {
                           <motion.div
                             key={i}
                             animate={{ scale: [1, 1.2, 1] }}
-                            transition={{ 
-                              duration: 0.8, 
-                              repeat: Infinity, 
-                              delay: i * 0.2 
+                            transition={{
+                              duration: 0.8,
+                              repeat: Infinity,
+                              delay: i * 0.2,
                             }}
                             className="w-2 h-2 bg-vsolve-gold rounded-full"
                           />
@@ -189,7 +190,10 @@ export default function AccessPortal() {
                     exit={{ opacity: 0, y: -20 }}
                     className="text-red-400 text-sm font-medium"
                   >
-                    Access denied. {attempts >= 3 ? 'Contact your institutional liaison.' : 'Verify your code.'}
+                    Access denied.{" "}
+                    {attempts >= 3
+                      ? "Contact your institutional liaison."
+                      : "Verify your code."}
                   </motion.div>
                 )}
               </AnimatePresence>
@@ -210,12 +214,16 @@ export default function AccessPortal() {
           >
             <div className="flex items-center space-x-3">
               <Shield className="w-5 h-5" />
-              <span className="text-sm font-medium tracking-wide">INSTITUTIONAL ACCESS</span>
+              <span className="text-sm font-medium tracking-wide">
+                INSTITUTIONAL ACCESS
+              </span>
             </div>
             <div className="w-px h-6 bg-vsolve-gold/30" />
             <div className="flex items-center space-x-3">
               <Eye className="w-5 h-5" />
-              <span className="text-sm font-medium tracking-wide">SACRED TIMING</span>
+              <span className="text-sm font-medium tracking-wide">
+                SACRED TIMING
+              </span>
             </div>
           </motion.div>
         </motion.div>
@@ -232,9 +240,9 @@ export default function AccessPortal() {
           VSOLVE INDIA PVT LTD
         </p>
         <p className="text-vsolve-ivory/20 text-xs mt-1">
-          Strategic clarity for Earth's next spiritual leaders
+          Strategic Systems for Custodians of Legacy and Power
         </p>
       </motion.div>
     </div>
-  )
-} 
+  );
+}
