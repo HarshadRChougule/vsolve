@@ -1,8 +1,8 @@
-'use client'
+"use client";
 
-import React from 'react'
-import { motion } from 'framer-motion'
-import { Compass, Heart, Shield, Star } from 'lucide-react'
+import React from "react";
+import { motion } from "framer-motion";
+import { Compass, Heart, Shield, Star } from "lucide-react";
 
 export default function AboutPage() {
   return (
@@ -26,17 +26,17 @@ export default function AboutPage() {
             <h1 className="text-4xl lg:text-6xl font-serif font-bold text-vsolve-gold tracking-wide leading-tight">
               A Sacred System
             </h1>
-            
+
             <div className="space-y-6 text-lg text-vsolve-ivory/60 leading-relaxed max-w-3xl mx-auto">
               <p>
-                VSOLVE functions as a precision consultancy designed to serve global 
-                institutions, legacy businesses, and national bodies with emotionally 
-                ethical, karmically aligned strategic systems.
+                VSOLVE functions as a precision consultancy designed to serve
+                global institutions, legacy businesses, and national bodies with
+                emotionally ethical, karmically aligned strategic systems.
               </p>
               <p>
-                We are the trusted clarity engine behind impactful decisions—strategic, 
-                not promotional; ethically precise, not generic; karmically neutral, 
-                not inflated.
+                We are the trusted clarity engine behind impactful
+                decisions—strategic, not promotional; ethically precise, not
+                generic; karmically neutral, not inflated.
               </p>
             </div>
           </motion.div>
@@ -58,18 +58,21 @@ export default function AboutPage() {
             </h2>
             <div className="space-y-6 text-lg text-vsolve-ivory/60 leading-relaxed max-w-3xl mx-auto">
               <p>
-                VSOLVE India is not a consultancy. We are a charity architecture firm guiding elite clients through karmic realignment, strategic grief repair, and leadership embodiment.
+                VSOLVE India is not a consultancy. We are a clarity architecture
+                firm guiding elite clients through karmic realignment, strategic
+                grief repair, and leadership embodiment.
               </p>
               <p>
-                We exist for institutions, governments, family businesses, and leaders who cannot afford misalignment.
-                From leadership diagnostics and vision-to-execution frameworks, to ethical advisory for ministries and academic boards—we operate as the trusted clarity engine behind impactful decisions.
+                We exist for institutions, governments, family businesses, and
+                leaders who cannot afford misalignment. From leadership
+                diagnostics and vision-to-execution frameworks, to ethical
+                advisory for ministries and academic boards—we operate as the
+                trusted clarity engine behind impactful decisions.
               </p>
             </div>
           </motion.div>
         </div>
       </section>
-
-
 
       {/* Values Section */}
       <section className="relative py-20">
@@ -94,22 +97,26 @@ export default function AboutPage() {
                 {
                   icon: <Shield className="w-8 h-8" />,
                   title: "Karmic Neutrality",
-                  description: "Every decision maintains ethical balance and sustainable impact"
+                  description:
+                    "Every decision maintains ethical balance and sustainable impact",
                 },
                 {
                   icon: <Compass className="w-8 h-8" />,
                   title: "Strategic Precision",
-                  description: "Surgical clarity in complex institutional challenges"
+                  description:
+                    "Surgical clarity in complex institutional challenges",
                 },
                 {
                   icon: <Heart className="w-8 h-8" />,
                   title: "Emotional Ethics",
-                  description: "Honoring the human element in all strategic frameworks"
+                  description:
+                    "Honoring the human element in all strategic frameworks",
                 },
                 {
                   icon: <Star className="w-8 h-8" />,
                   title: "Sacred Systems",
-                  description: "Building frameworks that serve beyond profit and ego"
+                  description:
+                    "Building frameworks that serve beyond profit and ego",
                 },
               ].map((value, index) => (
                 <motion.div
@@ -120,9 +127,7 @@ export default function AboutPage() {
                   transition={{ delay: index * 0.1 }}
                   className="border border-vsolve-gold/30 rounded-sm p-8 space-y-4"
                 >
-                  <div className="text-vsolve-gold mx-auto">
-                    {value.icon}
-                  </div>
+                  <div className="text-vsolve-gold mx-auto">{value.icon}</div>
                   <h3 className="text-xl font-serif font-bold text-vsolve-gold tracking-wide">
                     {value.title}
                   </h3>
@@ -135,8 +140,6 @@ export default function AboutPage() {
           </motion.div>
         </div>
       </section>
-
-
 
       {/* Footer */}
       <motion.div
@@ -153,5 +156,5 @@ export default function AboutPage() {
         </p>
       </motion.div>
     </div>
-  )
-} 
+  );
+}
